@@ -57,7 +57,7 @@ public class RestaurantListFragment extends Fragment {
 //        progressDialog.setTitle("Please Wait");
 //        progressDialog.setMessage("Fetching Restaurant List...");
 //        progressDialog.show();
-//        getRestaurantList();
+//        getRestaurantList();wdf
 
         restaurantList = new ArrayList<>();
         restaurantList.add(new Restaurant("Disco Chettinad", "Indian, Chinese", "Guduvancheri"));
