@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">SRM Foodies</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_address">Address</string>
+    <string name="submit_button_text">Submit</string>
+    <string name="hint_dob">Date Of Birth (dd/mm/yyyy)</string>
+    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="srm_button_text">SRM</string>
+    <string name="potheri_button_text">Potheri</string>
+    <string name="guduvancheri_button_text">Guduvancheri</string>
+    <string name="restaurant_list">Restaurant List</string>
+    <string name="empty_error_message">This field cannot be empty</string>
+    <string name="length_error_message">Phone number needs to be 10 digits long</string>
+    <string name="invalid_email_error_message">Invalid Email id</string>
+    <string name="invalid_date_error_message">Invalid Date</string>
+    <string name="title_activity_restaurant_page">RestaurantPageActivity</string>
+    <string name="search">  Search Restaurants, Cuisines or Locations</string>
+</resources>
