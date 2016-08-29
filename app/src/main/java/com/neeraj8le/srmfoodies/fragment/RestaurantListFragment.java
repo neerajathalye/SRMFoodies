@@ -24,7 +24,12 @@ import com.android.volley.toolbox.Volley;
 import com.neeraj8le.srmfoodies.CONSTANTS;
 import com.neeraj8le.srmfoodies.R;
 import com.neeraj8le.srmfoodies.RestaurantListAdapter;
+import com.neeraj8le.srmfoodies.model.Customization;
+import com.neeraj8le.srmfoodies.model.Mapping;
+import com.neeraj8le.srmfoodies.model.MenuItem;
 import com.neeraj8le.srmfoodies.model.Restaurant;
+import com.neeraj8le.srmfoodies.model.Size;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +43,10 @@ public class RestaurantListFragment extends Fragment {
     RecyclerView restaurantListRecyclerView;
     RestaurantListAdapter restaurantListAdapter;
     ArrayList<Restaurant> restaurantList;
+    ArrayList<MenuItem> menuItemArrayList;
+    ArrayList<Size> sizeArrayList;
+    ArrayList<Customization> customizationArrayList;
+    ArrayList<Mapping> mappingArrayList;
     ProgressDialog progressDialog;
     EditText searchBar;
 //    DataBaseHandler db;
@@ -60,13 +69,40 @@ public class RestaurantListFragment extends Fragment {
 //        getRestaurantList();
 
         restaurantList = new ArrayList<>();
-        restaurantList.add(new Restaurant("Disco Chettinad", "Indian, Chinese", "Guduvancheri"));
-        restaurantList.add(new Restaurant("Biryani House", "Indian, Chinese", "SRM"));
-        restaurantList.add(new Restaurant("Real Food Mall", "Indian, Chinese", "Potheri"));
+        menuItemArrayList = new ArrayList<>();
+        sizeArrayList = new ArrayList<>();
+        customizationArrayList = new ArrayList<>();
+        mappingArrayList = new ArrayList<>();
 
-        restaurantListAdapter = new RestaurantListAdapter(getContext(), restaurantList);
-        restaurantListRecyclerView.setAdapter(restaurantListAdapter);
-        restaurantListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        restaurantList.add(new Restaurant(1, "Disco Chettinad", "Indian, Chinese", "Guduvancheri"));
+        restaurantList.add(new Restaurant(2, "Biryani House", "Indian, Chinese", "SRM"));
+        restaurantList.add(new Restaurant(3, "Real Food Mall", "Indian, Chinese", "Potheri"));
+
+        menuItemArrayList.add(new MenuItem(1, "Pizza"));
+        menuItemArrayList.add(new MenuItem(2, "Burger"));
+        menuItemArrayList.add(new MenuItem(3, "Pasta"));
+        menuItemArrayList.add(new MenuItem(4, "Pav Bhaji"));
+        menuItemArrayList.add(new MenuItem(5, "Dosa"));
+
+        sizeArrayList.add(new Size(1, "Small"));
+        sizeArrayList.add(new Size(2, "Medium"));
+        sizeArrayList.add(new Size(3, "Large"));
+        sizeArrayList.add(new Size(4, "Extra Large"));
+
+        customizationArrayList.add(new Customization(1, "Extra Cheese"));
+        customizationArrayList.add(new Customization(2, "Extra Mayo"));
+        customizationArrayList.add(new Customization(3, "Extra Onion"));
+        customizationArrayList.add(new Customization(4, "Extra Tomato"));
+
+        mappingArrayList.add(new Mapping(1, restaurantList.get(0), menuItemArrayList.get(0), sizeArrayList.get(0), customizationArrayList.get(0), 30, 100));
+        mappingArrayList.add(new Mapping(2, restaurantList.get(0), menuItemArrayList.get(0), sizeArrayList.get(0), customizationArrayList.get(2), 20, 200));
+        mappingArrayList.add(new Mapping(3, restaurantList.get(0), menuItemArrayList.get(0), sizeArrayList.get(0), customizationArrayList.get(3), 20, 300));
+
+        mappingArrayList.add(new Mapping(4, restaurantList.get(1), menuItemArrayList.get(1), sizeArrayList.get(0), customizationArrayList.get(3), 20, 400));
+        mappingArrayList.add(new Mapping(5, restaurantList.get(1), menuItemArrayList.get(0), sizeArrayList.get(0), customizationArrayList.get(3), 20, 500));
+
+
+        initializeAdapter(restaurantList);
 
 
         searchBar.addTextChangedListener(new TextWatcher() {
@@ -96,7 +132,6 @@ public class RestaurantListFragment extends Fragment {
                         searchBar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search_white_24dp, 0, R.drawable.ic_clear_white_24dp, 0);
                     }
                 }
-
                 final ArrayList<Restaurant> searchedList = new ArrayList<>();
                 for(Restaurant restaurant : restaurantList)
                 {
@@ -105,9 +140,7 @@ public class RestaurantListFragment extends Fragment {
                         searchedList.add(restaurant);
                     }
                 }
-                restaurantListAdapter = new RestaurantListAdapter(getContext(), searchedList);
-                restaurantListRecyclerView.setAdapter(restaurantListAdapter);
-                restaurantListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                initializeAdapter(searchedList);
                 restaurantListAdapter.notifyDataSetChanged();
             }
 
@@ -115,7 +148,6 @@ public class RestaurantListFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
             }
         });
-
         searchBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -179,17 +211,22 @@ public class RestaurantListFragment extends Fragment {
             for(int i = 0; i < jsonArray.length(); i++)
             {
                 JSONObject object = jsonArray.getJSONObject(i);
-                Restaurant rest = new Restaurant(object.optString(CONSTANTS.KEY_RESTAURANT_NAME), object.optString(CONSTANTS.KEY_RESTAURANT_CUISINE), object.optString(CONSTANTS.KEY_RESTAURANT_LOCATION));
+                Restaurant rest = new Restaurant(object.optInt(CONSTANTS.KEY_RESTAURANT_ID), object.optString(CONSTANTS.KEY_RESTAURANT_NAME), object.optString(CONSTANTS.KEY_RESTAURANT_CUISINE), object.optString(CONSTANTS.KEY_RESTAURANT_LOCATION));
                 restaurantList.add(rest);
                 //db.addRestaurant(rest);
             }
-            restaurantListAdapter = new RestaurantListAdapter(getContext(), restaurantList);
-            restaurantListRecyclerView.setAdapter(restaurantListAdapter);
-            restaurantListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            initializeAdapter(restaurantList);
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void initializeAdapter(ArrayList<Restaurant> restaurantList)
+    {
+        restaurantListAdapter = new RestaurantListAdapter(getContext(), restaurantList, menuItemArrayList, sizeArrayList, customizationArrayList, mappingArrayList);
+        restaurantListRecyclerView.setAdapter(restaurantListAdapter);
+        restaurantListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
 }

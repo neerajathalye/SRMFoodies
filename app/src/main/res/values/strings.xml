@@ -26,4 +26,5 @@
     <string name="invalid_date_error_message">Invalid Date</string>
     <string name="title_activity_restaurant_page">RestaurantPageActivity</string>
     <string name="search">  Search Restaurants, Cuisines or Locations</string>
+    <string name="add_button_text">add</string>
 </resources>

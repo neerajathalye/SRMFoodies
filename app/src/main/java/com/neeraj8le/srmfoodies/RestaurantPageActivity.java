@@ -5,7 +5,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,11 +21,14 @@ import com.neeraj8le.srmfoodies.fragment.InfoFragment;
 import com.neeraj8le.srmfoodies.fragment.MapFragment;
 import com.neeraj8le.srmfoodies.fragment.OrderFragment;
 import com.neeraj8le.srmfoodies.fragment.PhotosFragment;
+import com.neeraj8le.srmfoodies.model.Mapping;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantPageActivity extends AppCompatActivity {
+
+    ArrayList<Mapping> tempMapping;
 
     ImageSwitcher imageSwitcher;
     int images[];
@@ -76,6 +79,8 @@ public class RestaurantPageActivity extends AppCompatActivity {
         imageSwitcher.setInAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_in));
         imageSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this, android.R.anim.fade_out));
 
+        tempMapping = getIntent().getExtras().getParcelableArrayList("tempMapping");
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -89,19 +94,20 @@ public class RestaurantPageActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
 
+
     }
 
     public void setupViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DescriptionFragment(), "DESCRIPTION");
-        adapter.addFragment(new OrderFragment(), "ORDER");
-        adapter.addFragment(new PhotosFragment(), "PHOTOS");
-        adapter.addFragment(new MapFragment(), "MAP");
-        adapter.addFragment(new InfoFragment(), "INFO");
+        adapter.addFragment(new DescriptionFragment(), "DESCRIPTION", null);
+        adapter.addFragment(new OrderFragment(), "ORDER", tempMapping);
+        adapter.addFragment(new PhotosFragment(), "PHOTOS", null);
+        adapter.addFragment(new MapFragment(), "MAP", null);
+        adapter.addFragment(new InfoFragment(), "INFO", null);
         viewPager.setAdapter(adapter);
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -110,8 +116,13 @@ public class RestaurantPageActivity extends AppCompatActivity {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public void addFragment(Fragment fragment, String title)
+        public void addFragment(Fragment fragment, String title, ArrayList<Mapping> tempMapping)
         {
+            if (tempMapping != null) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("tempMapping", tempMapping);
+                fragment.setArguments(bundle);
+            }
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

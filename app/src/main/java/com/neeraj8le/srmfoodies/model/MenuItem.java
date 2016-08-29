@@ -7,7 +7,6 @@ import android.os.Parcelable;
 public class MenuItem implements Parcelable {
 
     private int id;
-
     private String name;
 
     public MenuItem(int id, String name) {

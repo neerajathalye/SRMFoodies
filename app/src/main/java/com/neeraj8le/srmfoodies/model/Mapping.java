@@ -17,15 +17,20 @@ public class Mapping implements Parcelable{
 
     private Customization customization;
 
+    private int customizationPrice;
 
-    public Mapping(int id, Restaurant restaurant, MenuItem menuItem, Size size, Customization customization) {
+    private int basePrice;
+
+
+    public Mapping(int id, Restaurant restaurant, MenuItem menuItem, Size size, Customization customization, int customizationPrice, int basePrice) {
         this.id = id;
         this.restaurant = restaurant;
         this.menuItem = menuItem;
         this.size = size;
         this.customization = customization;
+        this.customizationPrice = customizationPrice;
+        this.basePrice = basePrice;
     }
-
 
     public Mapping() {
     }
@@ -86,6 +91,22 @@ public class Mapping implements Parcelable{
         this.customization = customization;
     }
 
+    public int getCustomizationPrice() {
+        return customizationPrice;
+    }
+
+    public void setCustomizationPrice(int customizationPrice) {
+        this.customizationPrice = customizationPrice;
+    }
+
+    public int getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(int basePrice) {
+        this.basePrice = basePrice;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -99,6 +120,8 @@ public class Mapping implements Parcelable{
         bundle.putParcelable("menuItem", menuItem);
         bundle.putParcelable("size", size);
         bundle.putParcelable("customization", customization);
+        bundle.putInt("customizationPrice", customizationPrice);
+        bundle.putInt("basePrice", basePrice);
         parcel.writeBundle(bundle);
     }
 
@@ -110,6 +133,8 @@ public class Mapping implements Parcelable{
         menuItem = bundle.getParcelable("menuItem");
         size = bundle.getParcelable("size");
         customization = bundle.getParcelable("customization");
+        customizationPrice = bundle.getInt("customizationPrice");
+        basePrice = bundle.getInt("basePrice");
     }
 
 }
